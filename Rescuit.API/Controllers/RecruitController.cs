@@ -50,5 +50,15 @@ namespace Rescuit.API.Controllers
         }
 
 
+        // GET: api/<UsersController>
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetWithAuthorize()
+        {
+            var result = "Tôi là bracing man";
+
+            return Ok(result);
+        }
+
     }
 }
