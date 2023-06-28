@@ -11,7 +11,7 @@ namespace Rescuit.API.Repository
         Dictionary<string, string> UsersRecords = new Dictionary<string, string>
     {
         { "admin","admin"},
-        { "password","password"}
+        { "dev","dev"}
     };
 
         private readonly IConfiguration _configuration;
@@ -28,6 +28,8 @@ namespace Rescuit.API.Repository
                 return null;
             }
 
+            var userType = new Claim("role", users.Password);
+
             //We have Authenticated
             //Generate JSON Web Token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -35,9 +37,10 @@ namespace Rescuit.API.Repository
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
-              {
-             new Claim(ClaimTypes.Name, users.Name)
-              }),
+                  {
+                     new Claim(ClaimTypes.Name, users.Name),
+                     userType
+                  }),
                 Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
